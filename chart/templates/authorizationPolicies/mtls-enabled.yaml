@@ -1,0 +1,11 @@
+# Enabled mTLS at the sidecar level across entire namespace.
+# Enables us to use principal-based authentication/authorization.
+
+apiVersion: "security.istio.io/v1beta1"
+kind: "PeerAuthentication"
+metadata:
+  name: "default"
+  namespace: {{ .Release.Namespace }}
+spec:
+  mtls:
+    mode: STRICT

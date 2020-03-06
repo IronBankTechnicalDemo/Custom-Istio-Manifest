@@ -1,0 +1,19 @@
+# Enables traffic only from the UI ServiceAccount via Principal Authentication on specific HTTP methods.
+
+apiVersion: "security.istio.io/v1beta1"
+kind: "AuthorizationPolicy"
+metadata:
+  name: {{ .Values.globalName }}-service-policy
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.globalName }}-service
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/{{ .Release.Namespace }}/sa/{{ .Values.globalName }}-ui-sa"]
+  - to:
+    - operation:
+        methods: [ "GET", "POST", "PUT", "OPTIONS", "DELETE" ]

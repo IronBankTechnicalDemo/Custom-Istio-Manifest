@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ .Values.globalName }}-ui-destination-rules
+  namespace: {{ .Release.Namespace }}
+spec:
+  host: {{ .Values.globalName }}-ui
+  subsets:
+  - name: master
+    labels:
+      version: master
+  - name: test
+    labels:
+      version: test

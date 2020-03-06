@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ .Values.globalName }}-ui-virtual-service
+spec:
+  hosts:
+  - {{ .Values.globalName }}-ui.{{ .Release.Namespace }}.svc.cluster.local
+  http:
+  - name: {{ .Values.globalName }}-ui-master-route
+    route:
+    - destination:
+        host: {{ .Values.globalName }}-ui.{{ .Release.Namespace }}.svc.cluster.local
+        subset: master
+      weight: 90
+  - name: {{ .Values.globalName }}-ui-test-route
+    route:
+    - destination:
+        host: {{ .Values.globalName }}-ui.{{ .Release.Namespace }}.svc.cluster.local
+        subset: test
+      weight: 10

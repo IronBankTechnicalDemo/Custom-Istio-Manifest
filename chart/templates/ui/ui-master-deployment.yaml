@@ -1,0 +1,46 @@
+# Deployment of the "master" stable UI.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.globalName }}-master-ui
+  labels:
+    app: {{ .Values.globalName }}-ui
+    version: master
+spec:
+  replicas: {{ .Values.replicaCounts.ui }}
+  selector:
+    matchLabels:
+      app: {{ .Values.globalName }}-ui
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.globalName }}-ui
+        version: master
+    spec:
+      serviceAccountName: {{ .Values.globalName }}-ui-sa
+      containers:
+        - name: main
+          image: "{{ .Values.images.ui.name }}:{{ .Values.images.ui.version }}"
+          imagePullPolicy: {{ .Values.images.ui.pullPolicy }}
+          env:
+            - name: SERVICE_NAME
+              value: {{ .Values.globalName }}-service
+            - name: SERVICE_PORT
+              value: {{ .Values.ports.service | quote }}
+            - name: NAMESPACE
+              value: {{ .Release.Namespace }}
+            - name: UI_PORT
+              value: {{ .Values.ports.ui | quote }}
+          ports:
+            - name: http-port
+              containerPort: {{ .Values.ports.ui }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http-port
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http-port

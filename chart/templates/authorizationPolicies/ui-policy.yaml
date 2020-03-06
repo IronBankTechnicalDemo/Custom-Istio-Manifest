@@ -1,0 +1,16 @@
+# Enables GET HTTP requests.
+
+apiVersion: "security.istio.io/v1beta1"
+kind: "AuthorizationPolicy"
+metadata:
+  name: {{ .Values.globalName }}-ui-policy
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.globalName }}-service
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        methods: [ "GET" ]

@@ -1,0 +1,30 @@
+globalName: status
+
+replicaCounts:
+  ui: 3
+  service: 1
+
+# TLS mode for entire namespace
+# STRICT or PERMISSIVE
+tls_mode: STRICT
+
+# TLS mode for Istio Ingress Gateway
+# SIMPLE or MUTUAL
+gateway_tls_mode: SIMPLE
+
+images:
+  ui:
+    name: atoy3731/status-ui
+    version: "1.0"
+    testVersion: "1.1"
+    pullPolicy: Always
+  service:
+    name: atoy3731/status-service
+    version: "1.0"
+    pullPolicy: Always
+
+ports:
+  service: 5000
+  ui: 80
+
+ingress_host: status.adamtoy.io

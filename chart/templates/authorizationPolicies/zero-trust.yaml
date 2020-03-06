@@ -1,0 +1,9 @@
+# Enables ZERO-TRUST traffic policy inside the namespace. Exceptions are required to open traffic.
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: zero-trust-policy
+  namespace: {{ .Release.Namespace }}
+spec:
+  {}

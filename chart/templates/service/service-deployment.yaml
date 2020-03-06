@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.globalName }}-service
+  labels:
+    app: {{ .Values.globalName }}-service
+spec:
+  replicas: {{ .Values.replicaCounts.service }}
+  selector:
+    matchLabels:
+      app: {{ .Values.globalName }}-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.globalName }}-service
+    spec:
+      serviceAccountName: {{ .Values.globalName }}-service-sa
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.images.service.name }}:{{ .Values.images.service.version }}"
+          imagePullPolicy: {{ .Values.images.service.pullPolicy }}
+          ports:
+            - name: http-port
+              containerPort: {{ .Values.ports.service }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http-port
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http-port
+          env:
+            - name: PORT
+              value: {{ .Values.ports.service | quote }}
+            - name: DEBUG
+              value: "true"

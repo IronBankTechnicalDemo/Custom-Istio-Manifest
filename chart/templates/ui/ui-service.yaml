@@ -1,0 +1,18 @@
+# Service for load balancing between UI pods.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.globalName }}-ui
+  labels:
+    app: {{ .Values.globalName }}-ui
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.ports.ui }}
+      targetPort: http-port
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Values.globalName }}-ui
+

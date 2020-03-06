@@ -1,0 +1,17 @@
+# Load balancer for service pods.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.globalName }}-service
+  labels:
+    app: {{ .Values.globalName }}-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.ports.service }}
+      targetPort: http-port
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Values.globalName }}-service

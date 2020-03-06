@@ -13,7 +13,7 @@ spec:
   rules:
   - from:
     - source:
-        principals: ["cluster.local/ns/{{ .Release.Namespace }}/sa/{{ .Values.globalName }}-ui-sa"]
+        principals: ["{{ .Values.globalName }}-ui-sa"]
   - to:
     - operation:
         methods: [ "GET", "POST", "PUT", "OPTIONS", "DELETE" ]
